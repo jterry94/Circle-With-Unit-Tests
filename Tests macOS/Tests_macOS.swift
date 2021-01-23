@@ -1,0 +1,109 @@
+//
+//  Tests_macOS.swift
+//  Tests macOS
+//
+//  Created by Jeff Terry on 11/28/20.
+//
+
+import XCTest
+
+class Tests_macOS: XCTestCase {
+
+    override func setUpWithError() throws {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        // In UI tests it is usually best to stop immediately when a failure occurs.
+        continueAfterFailure = false
+
+        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    }
+
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testExample() throws {
+        // UI tests must launch the application that they test.
+        let app = XCUIApplication()
+        app.launch()
+
+        // Use recording to get started writing UI tests.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+    
+    func testCircleArea() {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let myCircle = Circle()
+        
+        let radius = 1.0
+        
+        _ = myCircle.initWithRadius(passedRadius: radius)
+        
+        XCTAssertEqual(myCircle.area, Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
+        
+        
+    }
+    
+    func testCirclePerimeter(){
+        
+        let myCircle = Circle()
+        
+        let radius = 1.0
+        
+        _ = myCircle.initWithRadius(passedRadius: radius)
+        
+        XCTAssertEqual(myCircle.perimeter, 2.0*Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
+        
+        
+        
+    }
+    
+    
+    func testEllipseArea(){
+        
+        let myEllipse = Ellipse()
+        
+        let majorAxis = 3.0
+        let minorAxis = 2.0
+        
+        _ = myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)
+        
+        XCTAssertEqual(myEllipse.area, 6.0*Double.pi, accuracy: 1.0E-7,"Was not equal to the resolution.")
+        
+        
+    
+   
+        
+        
+        
+    }
+    
+    
+     func testEllipsePerimeter(){
+            
+            let myEllipse = Ellipse()
+                
+                let majorAxis = 3.0
+                let minorAxis = 2.0
+                
+                _ = myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)
+                
+                
+                XCTAssertEqual(myEllipse.perimeter, 15.865439526701, accuracy: 1.0E-7, "Was not equal to the resolution." )
+                
+            }
+    
+    
+    
+
+    func testLaunchPerformance() throws {
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
+            // This measures how long it takes to launch your application.
+            measure(metrics: [XCTApplicationLaunchMetric()]) {
+                XCUIApplication().launch()
+            }
+        }
+    }
+}
