@@ -21,19 +21,21 @@ class Circle: Ellipse {
         radius = passedRadius
         
         Task{
-            
+
             let _ = await withTaskGroup(of:  Void.self) { taskGroup in
-                
-        
-            
+
+
+
                 taskGroup.addTask { await self.calculateArea(majorAxis: self.radius, minorAxis: self.radius)}
                 taskGroup.addTask { await self.calculatePerimeter(majorAxis: self.radius, minorAxis: self.radius)}
-            
+
         }
-            
+
             await setButtonEnable(state: true)
-                                                 
+
+
         }
+
         
         return true
         

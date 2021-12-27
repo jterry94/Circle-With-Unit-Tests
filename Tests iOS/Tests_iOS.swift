@@ -41,9 +41,9 @@ class Tests_iOS: XCTestCase {
         
         let radius = 1.0
         
-        let _ = await myCircle.initWithRadius(passedRadius: radius)
+        Task.init { await _ = myCircle.initWithRadius(passedRadius: radius)}
         
-        sleep(25)
+        sleep(1)
         let area = myCircle.area
         
         XCTAssertEqual(area, Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
@@ -57,9 +57,9 @@ class Tests_iOS: XCTestCase {
         
         let radius = 1.0
         
-        async{ await myCircle.initWithRadius(passedRadius: radius)}
+        Task.init { await _ = myCircle.initWithRadius(passedRadius: radius)}
         
-        sleep(25)
+        sleep(1)
         
         let perimeter = myCircle.perimeter
         
@@ -77,13 +77,18 @@ class Tests_iOS: XCTestCase {
         let majorAxis = 3.0
         let minorAxis = 2.0
         
-        let _ = await myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)
+        Task.init {await _ = myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)}
         
-        sleep(25)
+        sleep(1)
         
         let area = myEllipse.area
         
         XCTAssertEqual(area, 6.0*Double.pi, accuracy: 1.0E-7,"Was not equal to the resolution.")
+        
+        
+    
+   
+        
         
         
     }
@@ -96,15 +101,16 @@ class Tests_iOS: XCTestCase {
         let majorAxis = 3.0
         let minorAxis = 2.0
                 
-        let _ =  await myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)
+        Task.init {await _ = myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)}
         
-        sleep(25)
+        sleep(1)
          
          let perimeter = myEllipse.perimeter
                 
         XCTAssertEqual(perimeter, 15.865439526701, accuracy: 1.0E-7, "Was not equal to the resolution." )
                 
-        }
+            }
+    
     
     
 
