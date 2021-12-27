@@ -39,10 +39,7 @@ class Tests_macOS: XCTestCase {
         
         let radius = 1.0
         
-        Task.init { await _ = myCircle.initWithRadius(passedRadius: radius)}
-        
-        sleep(1)
-        let area = myCircle.area
+        let area = await myCircle.calculateArea(majorAxis: radius, minorAxis: radius)
         
         XCTAssertEqual(area, Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
         
@@ -55,11 +52,8 @@ class Tests_macOS: XCTestCase {
         
         let radius = 1.0
         
-        Task.init { await _ = myCircle.initWithRadius(passedRadius: radius)}
+        let perimeter = await myCircle.calculatePerimeter(majorAxis: radius, minorAxis: radius)
         
-        sleep(1)
-        
-        let perimeter = myCircle.perimeter
         
         XCTAssertEqual(perimeter, 2.0*Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
         
@@ -75,18 +69,9 @@ class Tests_macOS: XCTestCase {
         let majorAxis = 3.0
         let minorAxis = 2.0
         
-        Task.init {await _ = myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)}
-        
-        sleep(1)
-        
-        let area = myEllipse.area
+        let area = await myEllipse.calculateArea(majorAxis: majorAxis, minorAxis: minorAxis)
         
         XCTAssertEqual(area, 6.0*Double.pi, accuracy: 1.0E-7,"Was not equal to the resolution.")
-        
-        
-    
-   
-        
         
         
     }
@@ -99,17 +84,13 @@ class Tests_macOS: XCTestCase {
         let majorAxis = 3.0
         let minorAxis = 2.0
                 
-        Task.init {await _ = myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)}
-        
-        sleep(1)
-         
-         let perimeter = myEllipse.perimeter
+        let perimeter = await myEllipse.calculatePerimeter(majorAxis: majorAxis, minorAxis: minorAxis)
                 
         XCTAssertEqual(perimeter, 15.865439526701, accuracy: 1.0E-7, "Was not equal to the resolution." )
                 
-            }
+        }
     
-    
+
     
 
     func testLaunchPerformance() throws {

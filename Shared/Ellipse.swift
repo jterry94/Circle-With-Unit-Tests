@@ -35,8 +35,8 @@ class Ellipse: NSObject, ObservableObject {
                 
         
             
-                taskGroup.addTask { await self.calculateArea(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)}
-                taskGroup.addTask { await self.calculatePerimeter(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)}
+                taskGroup.addTask { let _ = await self.calculateArea(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)}
+                taskGroup.addTask { let _ = await self.calculatePerimeter(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)}
             
         }
             
@@ -54,7 +54,7 @@ class Ellipse: NSObject, ObservableObject {
     /// - Parameters:
     ///   - majorAxis: majorAxis of the Ellipse (units of length)
     ///   - minorAxis: minorAxis of the Ellipse (units of length)
-    func calculateArea(majorAxis: Double, minorAxis: Double) async {
+    func calculateArea(majorAxis: Double, minorAxis: Double) async -> Double {
         
         //Area = pi * majorAxis * minorAxis
         
@@ -64,8 +64,30 @@ class Ellipse: NSObject, ObservableObject {
         await updateArea(areaTextString: newAreaText)
         await newAreaValue(areaValue: calculatedArea)
         
-        return
+        return calculatedArea
         
+        
+    }
+    
+    
+    /// calculatePerimeter
+    /// - Parameters:
+    ///   - majorAxis: majorAxis of the Ellipse (units of length)
+    ///   - minorAxis: minorAxis of the Ellipse (units of length)
+    func calculatePerimeter(majorAxis: Double, minorAxis: Double) async -> Double {
+        
+        //perimeter = pi(a+b)(1 + 1/4 h^2 + 1/64 h^4 + 1/256 h^6 + ....)
+        // h = (majorAxis - minorAxis)/(majorAxis + minorAxis)
+        
+        let h = (majorAxis - minorAxis)/(majorAxis + minorAxis)
+        
+        let calculatedPerimeter = (1.0 + (1.0/4.0)*(pow(h, 2.0)) + (1.0/64.0)*(pow(h, 4.0)) + (1.0/256.0)*pow(h, 6.0))*(majorAxis + minorAxis)*Double.pi
+        let newPerimeterText = String(format: "%7.5f", calculatedPerimeter)
+        
+        await updatePerimeter(perimeterTextString: newPerimeterText)
+        await newPerimeterValue(perimeterValue: calculatedPerimeter)
+        
+        return calculatedPerimeter
         
     }
     
@@ -134,26 +156,7 @@ class Ellipse: NSObject, ObservableObject {
     }
 
     
-    
-    /// calculatePerimeter
-    /// - Parameters:
-    ///   - majorAxis: majorAxis of the Ellipse (units of length)
-    ///   - minorAxis: minorAxis of the Ellipse (units of length)
-    func calculatePerimeter(majorAxis: Double, minorAxis: Double) async{
-        
-        //perimeter = pi(a+b)(1 + 1/4 h^2 + 1/64 h^4 + 1/256 h^6 + ....)
-        // h = (majorAxis - minorAxis)/(majorAxis + minorAxis)
-        
-        let h = (majorAxis - minorAxis)/(majorAxis + minorAxis)
-        
-        let calculatedPerimeter = (1.0 + (1.0/4.0)*(pow(h, 2.0)) + (1.0/64.0)*(pow(h, 4.0)) + (1.0/256.0)*pow(h, 6.0))*(majorAxis + minorAxis)*Double.pi
-        let newPerimeterText = String(format: "%7.5f", calculatedPerimeter)
-        
-        await updatePerimeter(perimeterTextString: newPerimeterText)
-        await newPerimeterValue(perimeterValue: calculatedPerimeter)
-        
-        
-    }
+
     
     
 

@@ -26,8 +26,8 @@ class Circle: Ellipse {
 
 
 
-                taskGroup.addTask { await self.calculateArea(majorAxis: self.radius, minorAxis: self.radius)}
-                taskGroup.addTask { await self.calculatePerimeter(majorAxis: self.radius, minorAxis: self.radius)}
+                taskGroup.addTask { let _ = await self.calculateArea(majorAxis: self.radius, minorAxis: self.radius)}
+                taskGroup.addTask { let _ = await self.calculatePerimeter(majorAxis: self.radius, minorAxis: self.radius)}
 
         }
 
@@ -46,7 +46,7 @@ class Circle: Ellipse {
     /// - Parameters:
     ///   - majorAxis: radius of the circle (unit length)
     ///   - minorAxis: radius of the circle (unit length)
-    override func calculatePerimeter(majorAxis: Double, minorAxis: Double) async{
+    override func calculatePerimeter(majorAxis: Double, minorAxis: Double) async -> Double {
         
         //perimeter = 2 * pi * radius
         //perimeter = pi * (majorAxis + minorAxis)
@@ -58,7 +58,7 @@ class Circle: Ellipse {
         await newPerimeterValue(perimeterValue: calculatedPerimeter)
         
         
-        return
+        return calculatedPerimeter
         
     }
     
