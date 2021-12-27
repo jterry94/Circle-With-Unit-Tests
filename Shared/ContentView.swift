@@ -45,6 +45,8 @@ struct ContentView: View {
                 
             }
             }
+            HStack{
+                VStack{
             Text("Perimeter")
                 .padding(.bottom, 0)
             TextField("", text: ( $circleModel.perimeterText))
@@ -52,6 +54,21 @@ struct ContentView: View {
                 .frame(width: 100)
                 .padding(.top, 0)
                 .padding(.bottom, 30)
+                }
+                VStack{
+                    Text("Perimeter")
+                        .padding(.bottom, 0)
+                    Text("\(circleModel.perimeter, specifier: "%.2f")")
+                        .padding(.horizontal)
+                        .frame(width: 100)
+                        .padding(.top, 0)
+                        .padding(.bottom,30)
+                        
+                    }
+
+                
+                
+            }
             
             Button("Calculate", action: {Task.init { await self.calculateCircle()}})
                 .padding(.bottom)
