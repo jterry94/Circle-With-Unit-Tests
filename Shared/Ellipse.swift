@@ -29,7 +29,7 @@ class Ellipse: NSObject, ObservableObject {
         semiMajorAxisLength = majorAxis
         semiMinorAxisLength = minorAxis
         
-        Task{
+       
             
             let _ = await withTaskGroup(of:  Void.self) { taskGroup in
                 
@@ -42,7 +42,7 @@ class Ellipse: NSObject, ObservableObject {
             
             await setButtonEnable(state: true)
                                                  
-        }
+       
         
 
         return true

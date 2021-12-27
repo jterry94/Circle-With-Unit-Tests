@@ -31,6 +31,27 @@ class Tests_macOS: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
+    func testCircleInitialization() async {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let radius = 1.0
+        
+        let myCircle = Circle()
+        
+        let _ = await myCircle.initWithRadius(passedRadius: radius)
+        
+        let area = myCircle.area
+        
+        XCTAssertEqual(area, Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
+        
+        let perimeter = myCircle.perimeter
+        
+        XCTAssertEqual(perimeter, 2.0*Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
+        
+        
+    }
+    
     func testCircleArea() async {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -57,6 +78,28 @@ class Tests_macOS: XCTestCase {
         
         XCTAssertEqual(perimeter, 2.0*Double.pi, accuracy: 1.0E-7, "Was not equal to this resolution.")
         
+        
+        
+    }
+    
+    func testEllipseInitialization() async {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let myEllipse = Ellipse()
+        
+        let majorAxis = 3.0
+        let minorAxis = 2.0
+        
+        let _ = await myEllipse.initWithAxis(majorAxis: majorAxis, minorAxis: minorAxis)
+        
+        let area = myEllipse.area
+        
+        XCTAssertEqual(area, 6.0*Double.pi, accuracy: 1.0E-7,"Was not equal to the resolution.")
+        
+        let perimeter = myEllipse.perimeter
+        
+        XCTAssertEqual(perimeter, 15.865439526701, accuracy: 1.0E-7, "Was not equal to the resolution." )
         
         
     }

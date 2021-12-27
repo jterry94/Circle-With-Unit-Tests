@@ -20,7 +20,7 @@ class Circle: Ellipse {
         
         radius = passedRadius
         
-        Task{
+      
 
             let _ = await withTaskGroup(of:  Void.self) { taskGroup in
 
@@ -34,7 +34,7 @@ class Circle: Ellipse {
             await setButtonEnable(state: true)
 
 
-        }
+       
 
         
         return true
