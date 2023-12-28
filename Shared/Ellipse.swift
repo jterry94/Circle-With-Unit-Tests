@@ -7,42 +7,76 @@
 //
 
 import SwiftUI
+import Observation
 
-class Ellipse: NSObject, ObservableObject {
-    
+@Observable class Ellipse {
     
     var semiMajorAxisLength = 0.0
     var semiMinorAxisLength = 0.0
     var centerOfAnEllipse = (x:0.0, y:0.0)
-    @Published var area = 0.0
-    @Published var perimeter = 0.0
-    @Published var perimeterText = ""
-    @Published var areaText = ""
-    @Published var enableButton = true
+    var area = 0.0
+    var perimeter = 0.0
+    var perimeterText = ""
+    var areaText = ""
+    var enableButton = true
     
     /// initWithAxis Initialized the Ellipse and Calculated Area and the Perimeter
     /// - Parameters:
     ///   - majorAxis: majorAxis of the Ellipse (units of length)
     ///   - minorAxis: minorAxis of the Ellipse (units of length)
-    func initWithAxis(majorAxis: Double, minorAxis: Double) async -> Bool {
+    func initWithAxis(majorAxis: Double, minorAxis: Double) -> Bool {
         
         semiMajorAxisLength = majorAxis
         semiMinorAxisLength = minorAxis
         
        
             
-            let _ = await withTaskGroup(of:  Void.self) { taskGroup in
+        Task{
+            
+            await setButtonEnable(state: false)
+            
+            let returnedResults = await withTaskGroup(of: (Type: String, StringToDisplay: String, Value: Double).self, /* this is the return from the taskGroup*/
+                                                      returning: [(Type: String, StringToDisplay: String, Value: Double)].self, /* this is the return from the result collation */
+                                                      body: { taskGroup in  /*This is the body of the task*/
                 
-        
+                // We can use `taskGroup` to spawn child tasks here.
+                
+                taskGroup.addTask { let areaResult = await self.calculateArea(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)
+                    
+                    return areaResult  /* this is the return from the taskGroup*/}
+                
+                taskGroup.addTask { let perimeterResult = await self.calculatePerimeter(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)
+                    
+                    return perimeterResult  /* this is the return from the taskGroup*/}
+                
+                
+                
+                // Collate the results of all child tasks
+                var combinedTaskResults :[(Type: String, StringToDisplay: String, Value: Double)] = []
+                for await result in taskGroup {
+                    
+                    combinedTaskResults.append(result)
+                }
+                
+                return combinedTaskResults  /* this is the return from the result collation */
+                
+            })
             
-                taskGroup.addTask { let _ = await self.calculateArea(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)}
-                taskGroup.addTask { let _ = await self.calculatePerimeter(majorAxis: self.semiMajorAxisLength, minorAxis: self.semiMinorAxisLength)}
+            //Do whatever processing that you need with the returned results of all of the child tasks here.
             
-        }
+            // Sort the results based upon of the result so that the Area returns first
+            
+            let sortedCombinedResults = returnedResults.sorted(by: { $0.0 < $1.0 })
+            
+            
+            print(returnedResults)
+            print(sortedCombinedResults)
             
             await setButtonEnable(state: true)
-                                                 
-       
+            
+            
+            
+        }
         
 
         return true
@@ -54,9 +88,11 @@ class Ellipse: NSObject, ObservableObject {
     /// - Parameters:
     ///   - majorAxis: majorAxis of the Ellipse (units of length)
     ///   - minorAxis: minorAxis of the Ellipse (units of length)
-    func calculateArea(majorAxis: Double, minorAxis: Double) async -> Double {
+    func calculateArea(majorAxis: Double, minorAxis: Double) async -> (Type: String, StringToDisplay: String, Value: Double) {
         
         //Area = pi * majorAxis * minorAxis
+        let randomSleep = UInt32(Int.random(in: 1...5))
+        sleep(randomSleep)
         
         let calculatedArea = Double.pi * majorAxis * minorAxis
         let newAreaText = String(format: "%7.5f", calculatedArea)
@@ -64,7 +100,7 @@ class Ellipse: NSObject, ObservableObject {
         await updateArea(areaTextString: newAreaText)
         await newAreaValue(areaValue: calculatedArea)
         
-        return calculatedArea
+        return (Type: "Area", StringToDisplay: newAreaText, Value: calculatedArea)
         
         
     }
@@ -74,7 +110,10 @@ class Ellipse: NSObject, ObservableObject {
     /// - Parameters:
     ///   - majorAxis: majorAxis of the Ellipse (units of length)
     ///   - minorAxis: minorAxis of the Ellipse (units of length)
-    func calculatePerimeter(majorAxis: Double, minorAxis: Double) async -> Double {
+    func calculatePerimeter(majorAxis: Double, minorAxis: Double) async -> (Type: String, StringToDisplay: String, Value: Double) {
+        
+        let randomSleep = UInt32(Int.random(in: 1...5))
+        sleep(randomSleep)
         
         //perimeter = pi(a+b)(1 + 1/4 h^2 + 1/64 h^4 + 1/256 h^6 + ....)
         // h = (majorAxis - minorAxis)/(majorAxis + minorAxis)
@@ -87,7 +126,7 @@ class Ellipse: NSObject, ObservableObject {
         await updatePerimeter(perimeterTextString: newPerimeterText)
         await newPerimeterValue(perimeterValue: calculatedPerimeter)
         
-        return calculatedPerimeter
+        return (Type: "Ellipse Perimeter", StringToDisplay: newPerimeterText, Value: calculatedPerimeter)
         
     }
     

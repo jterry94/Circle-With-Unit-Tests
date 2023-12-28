@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Observation
 
 struct ContentView: View {
     
-    @ObservedObject private var circleModel = Circle()
+    @Bindable private var circleModel = Circle()
     @State var radiusString = "1.0"
     
     var body: some View {
@@ -18,7 +19,7 @@ struct ContentView: View {
             Text("Radius")
                 .padding(.top)
                 .padding(.bottom, 0)
-            TextField("Enter Radius", text: $radiusString, onCommit: {Task.init {await self.calculateCircle()}})
+            TextField("Enter Radius", text: $radiusString, onCommit: {self.calculateCircle()})
                 .padding(.horizontal)
                 .frame(width: 100)
                 .padding(.top, 0)
@@ -70,7 +71,7 @@ struct ContentView: View {
                 
             }
             
-            Button("Calculate", action: {Task.init { await self.calculateCircle()}})
+            Button("Calculate", action: {self.calculateCircle()})
                 .padding(.bottom)
                 .padding()
                 .disabled(circleModel.enableButton == false)
@@ -80,11 +81,12 @@ struct ContentView: View {
         
     }
     
-    func calculateCircle() async {
+    func calculateCircle() {
         
-        circleModel.setButtonEnable(state: false) 
+        circleModel.enableButton = false
         
-        let _ : Bool = await circleModel.initWithRadius(passedRadius: Double(radiusString)!)
+        
+        let _ : Bool =  circleModel.initWithRadius(passedRadius: Double(radiusString)!)
         
         
     
