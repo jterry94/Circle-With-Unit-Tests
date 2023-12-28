@@ -24,9 +24,10 @@ import SwiftUI
             
             await setButtonEnable(state: false)
             
-            let returnedResults = await withTaskGroup(of: (Type: String, StringToDisplay: String, Value: Double).self, /* this is the return from the taskGroup*/
-                                                      returning: [(Type: String, StringToDisplay: String, Value: Double)].self, /* this is the return from the result collation */
-                                                      body: { taskGroup in  /*This is the body of the task*/
+            let returnedResults = await withTaskGroup(
+                of: (Type: String, StringToDisplay: String, Value: Double).self, /* this is the return from the taskGroup*/
+                returning: [(Type: String, StringToDisplay: String, Value: Double)].self, /* this is the return from the result collation */
+                body: { taskGroup in  /*This is the body of the task*/
                 
                 // We can use `taskGroup` to spawn child tasks here.
                 
@@ -62,10 +63,6 @@ import SwiftUI
             await setButtonEnable(state: true)
             
         }
-
-
-       
-
         
         return true
         
